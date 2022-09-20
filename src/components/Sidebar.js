@@ -57,20 +57,21 @@ function Sidebar(props) {
       ) : (
         <div className="w-max bg-white rounded p-10 pt-5">
           <p className="font-bold text-sm mb-5">
-            Cryptocurrency by <p>market cap</p>
+            Cryptocurrency by
+            <br /> market cap
           </p>
           {coins?.map((coin) => {
             const profit = coin.price_change_percentage_24h > 0;
 
             return (
-              <>
+              <div key={coin.id}>
                 <div className="my-2 py-4">
                   <div className="grid grid-cols-4 gap-0">
                     <p className="font-bold text-sm col-span-1 w-16">
                       {coin.name}
                     </p>
 
-                    <p
+                    <div
                       className="col-span-3 ml-auto"
                       style={{
                         color: profit > 0 ? 'rgb(14, 203, 129)' : 'orange',
@@ -93,7 +94,7 @@ function Sidebar(props) {
                           </div>
                         </span>
                       )}
-                    </p>
+                    </div>
 
                     <p className="col-span-4 text-xs text-slate-400">
                       {props.symbol}{' '}
@@ -102,7 +103,7 @@ function Sidebar(props) {
                   </div>
                 </div>
                 <hr></hr>
-              </>
+              </div>
             );
           })}
         </div>
