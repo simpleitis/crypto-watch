@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import SelectorDropDown from './components/SelectorDropDown';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import SearchBar from './components/SearchBar';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import Graph from './components/Graph';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Header />
+      <div className="App grid grid-cols-12 grid-rows-12 gap-y-5 m-0 md:m-16 bg-slate-100 p-5 md:p-16">
+        <SelectorDropDown />
+        <SearchBar />
+        <Sidebar />
+        <Graph />
+        
+      </div>
+    </Provider>
   );
 }
 
