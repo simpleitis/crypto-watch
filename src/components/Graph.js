@@ -1,19 +1,22 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Line } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
 import { HistoricalChart } from '../config/api';
 import { changeCurrency } from '../redux/currency/currencyActions';
 
 function Graph(props) {
   const [historicalData, setHistoricalData] = useState();
-  const [days, setDays] = useState(1);
+  const [days, setDays] = useState(30);
+  const [coinList, setCoinList] = useState([]);
 
   const fetchHistoricalData = async () => {
     const { data } = await axios.get(
       HistoricalChart('bitcoin', props.type, days)
     );
 
-    // setHistoricalData(data.prices);
+    setHistoricalData(data.prices);
   };
 
   useEffect(() => {
@@ -21,7 +24,7 @@ function Graph(props) {
   }, [days, props.type]);
 
   return (
-    <div className="col-span-12 row-span-1 md:col-span-7 lg:col-span-7 bg-white rounded">
+    <div className="col-span-1 md:col-span-6 lg:col-span-5 bg-white rounded">
       {!historicalData ? (
         <div className="flex flex-row justify-center">
           <button
@@ -53,7 +56,67 @@ function Graph(props) {
           </button>
         </div>
       ) : (
-        <></>
+        <>
+          <Line
+            data={{
+              labels: historicalData.map((coin) => {
+                let date = new Date(coin[0]);
+                let time =
+                  date.getHours() > 12
+                    ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+                    : `${date.getHours()}:${date.getMinutes()} AM`;
+                return days === 1 ? time : date.toLocaleDateString();
+              }),
+
+              datasets: [
+                {
+                  data: historicalData.map((coin) => {
+                    return coin[1];
+                  }),
+                  backgroundColor: ['dodgerblue'],
+                  label: 'Bitcoin',
+                  borderColor: 'dodgerblue',
+                },
+              ],
+            }}
+            options={{
+              elements: {
+                point: {
+                  radius: 1,
+                },
+              },
+              scales: {
+                x: {
+                  grid: {
+                    display: false,
+                  },
+                  ticks: {
+                    maxTicksLimit: 6,
+                  },
+                },
+                y: {
+                  grid: {
+                    display: false,
+                  },
+                  ticks: {
+                    maxTicksLimit: 5,
+                  },
+                },
+              },
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'top',
+                  align: 'end',
+                  labels: {
+                    color: 'dodgerblue',
+                    usePointStyle: true,
+                  },
+                },
+              },
+            }}
+          />
+        </>
       )}
     </div>
   );

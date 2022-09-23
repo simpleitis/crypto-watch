@@ -10,12 +10,11 @@ function App() {
   return (
     <Provider store={store}>
       <Header />
-      <div className="App grid grid-cols-12 grid-rows-12 gap-y-5 m-0 md:m-16 bg-slate-100 p-5 md:p-16">
+      <div className="App p-5 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-8 lg:grid-row-12 gap-4 bg-slate-100">
         <SelectorDropDown />
         <SearchBar />
         <Sidebar />
         <Graph />
-        
       </div>
     </Provider>
   );

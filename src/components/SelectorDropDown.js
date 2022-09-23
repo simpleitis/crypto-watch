@@ -4,19 +4,20 @@ import { AiFillCaretDown } from 'react-icons/ai';
 import { connect } from 'react-redux';
 
 function SelectorDropDown(props) {
-  const [show, setShow] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const [type, setType] = useState('USD');
   const [symbol, setSymbol] = useState('$');
-
-  const handleClick = () => {
-    setShow(!show);
-  };
 
   useEffect(() => {
     props.changeCurrency(type, symbol);
   }, [symbol]);
 
+  const handleToggle = () => {
+    setToggle(!toggle);
+  };
+
   const handleSelection = (e) => {
+    console.log(e.target.innerText);
     if (e.target.innerText === 'USD') {
       setType('USD');
       setSymbol('$');
@@ -25,40 +26,62 @@ function SelectorDropDown(props) {
       setSymbol('₹');
     }
   };
+
   return (
     <>
-      <div className="col-span-4 row-span-1 md:col-span-3 lg:col-span-1 mt-0.5 h-max w-max">
-        <button
-          className="relative flex justify-left items-center bg-white border  text-gray-600 rounded focus:ring ring-gray-200 h-12"
-          onClick={handleClick}
-        >
-          <p className="px-4">{type}</p>
-          <span className="p-2 hover:transparent">
-            <AiFillCaretDown />
-          </span>
-          <div
-            className={
-              'absolute top-full min-w-full w-max bg-white shadow-md mt-1 rounded' +
-              (show ? ' show' : ' hidden')
-            }
-          >
-            <ul className="text-left border rounded">
-              <li
-                className="px-4 py-1 hover:bg-gray-100 border-b"
-                // handleClick={(event) => setCurrency(event.target.innerText)}
-                onClick={handleSelection}
-              >
-                USD
-              </li>
-              <li
-                className="px-4 py-1 hover:bg-gray-100 border-b"
-                onClick={handleSelection}
-              >
-                INR
-              </li>
-            </ul>
+      <div
+        class="col-span-1 lg:h-max lg:row-span-1 pt-1 w-max h-max"
+        onClick={handleToggle}
+      >
+        <div class="relative inline-block text-left">
+          <div>
+            <button
+              type="button"
+              class="inline-flex w-full justify-center rounded-md  bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100 "
+              id="menu-button"
+              aria-expanded="true"
+              aria-haspopup="true"
+            >
+              {props.type}
+              <AiFillCaretDown className="w-max h-max p-1 pl-4 pr-0" />
+            </button>
           </div>
-        </button>
+          {toggle && (
+            <div
+              class="absolute left-0 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="menu-button"
+              tabindex="-1"
+            >
+              <div
+                class="py-0 px-0 w-24 font-medium text-sm text-gray-600 "
+                role="none"
+              >
+                <a
+                  href="#"
+                  class="block px-1 py-2 hover:bg-gray-200 w-full"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="menu-item-0"
+                  onClick={handleSelection}
+                >
+                  USD
+                </a>
+                <a
+                  href="#"
+                  class="block px-1 py-2 hover:bg-gray-200"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="menu-item-1"
+                  onClick={handleSelection}
+                >
+                  INR
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

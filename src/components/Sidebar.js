@@ -23,7 +23,7 @@ function Sidebar(props) {
   }, [props.type]);
 
   return (
-    <div className="col-span-12 row-span-3 md:col-span-5 lg:col-span-5 md:ml-5">
+    <div className="col-span-1 md:col-span-6 lg:col-span-3 lg:row-span-10 md:justify-center w-full">
       {loading ? (
         <div className="flex flex-row justify-center">
           <button
@@ -55,7 +55,7 @@ function Sidebar(props) {
           </button>
         </div>
       ) : (
-        <div className="w-max bg-white rounded p-10 pt-5">
+        <div className="w-full bg-white rounded p-10 pt-5">
           <p className="font-bold text-sm mb-5">
             Cryptocurrency by
             <br /> market cap

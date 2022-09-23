@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 function SearchBar() {
   return (
-    <div className="col-span-8 row-span-1 md:col-span-4 lg:col-span-6 h-max ml-2">
+    <div className="sm:col-span-1 md:col-span-5 lg:col-span-4 lg:h-max lg:row-span-1 h-full w-full">
       <form>
         <div className="relative">
           <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
