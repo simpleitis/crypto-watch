@@ -55,12 +55,12 @@ function SelectorDropDown(props) {
               tabindex="-1"
             >
               <div
-                class="py-0 px-0 w-24 font-medium text-sm text-gray-600 "
+                className="py-0 px-0 w-24 font-medium text-sm text-gray-600 "
                 role="none"
               >
                 <a
                   href="#"
-                  class="block px-1 py-2 hover:bg-gray-200 w-full"
+                  className="block px-4 py-2 hover:bg-gray-200 w-full"
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-0"
@@ -70,7 +70,7 @@ function SelectorDropDown(props) {
                 </a>
                 <a
                   href="#"
-                  class="block px-1 py-2 hover:bg-gray-200"
+                  className="block px-4 py-2 hover:bg-gray-200"
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-1"

@@ -23,7 +23,7 @@ function Sidebar(props) {
   }, [props.type]);
 
   return (
-    <div className="col-span-1 md:col-span-6 lg:col-span-3 lg:row-span-10 md:justify-center w-full">
+    <div className="col-span-1 md:col-span-6 lg:col-span-3 lg:row-span-3 xl:col-span-3 2xl:col-span-3 md:justify-center w-full">
       {loading ? (
         <div className="flex flex-row justify-center">
           <button
