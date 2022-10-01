@@ -2,3 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 10px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: white;
+
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-300;
+    border-radius: 100vh;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-500
+  }
+}

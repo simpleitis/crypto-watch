@@ -62,7 +62,7 @@ function Sidebar(props) {
           </p>
           {coins?.map((coin) => {
             const profit = coin.price_change_percentage_24h > 0;
-
+            
             return (
               <div key={coin.id}>
                 <div className="my-2 py-4">

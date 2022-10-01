@@ -1,4 +1,4 @@
-import SelectorDropDown from './components/SelectorDropDown';
+import SelectorDropDown from './components/CurrencyDropDown';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import SearchBar from './components/SearchBar';

@@ -3,48 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
-import { AiFillCaretDown } from 'react-icons/ai';
 import { HistoricalChart } from '../config/api';
-import { changeCurrency } from '../redux/currency/currencyActions';
+import Button from './Button';
+import CryptoDropDown from './CryptoDropDown';
+import ChartDropDown from './ChartDropDown';
+import DatePicker from './DatePicker';
+import { changePeriod } from '../redux';
 
 function Graph(props) {
-  const [historicalData, setHistoricalData] = useState();
-  const [days, setDays] = useState(30);
-  const [coinList, setCoinList] = useState([]);
-  const [toggle, setToggle] = useState(false);
-  const [type, setType] = useState('USD');
-  const [symbol, setSymbol] = useState('$');
-
-  const fetchHistoricalData = async () => {
-    const { data } = await axios.get(
-      HistoricalChart('bitcoin', props.type, days)
-    );
-
-    setHistoricalData(data.prices);
-  };
-
-  useEffect(() => {
-    fetchHistoricalData();
-  }, [days, props.type]);
-
-  const handleToggle = () => {
-    setToggle(!toggle);
-  };
-
-  const handleSelection = (e) => {
-    console.log(e.target.innerText);
-    if (e.target.innerText === 'USD') {
-      setType('USD');
-      setSymbol('$');
-    } else {
-      setType('INR');
-      setSymbol('₹');
-    }
-  };
+  const colors = ['#007cff', '#ff6384', '#15cb85', '#ffcd57'];
 
   return (
     <div className="col-span-1 md:col-span-6 lg:col-span-5 lg:row-span-1 xl:col-span-7 2xl:col-span-9 bg-white rounded">
-      {!historicalData ? (
+      {!true ? (
         <div className="flex flex-row justify-center">
           <button
             type="button"
@@ -76,89 +47,46 @@ function Graph(props) {
         </div>
       ) : (
         <>
-          <div className="flex space-x-3 justify-end pt-4">
-            <button className="bg-slate-100 rounded">1D</button>
-            <button className="bg-slate-100 rounded">1W</button>
-            <button className="bg-slate-100 rounded">1M</button>
-            <button className="bg-slate-100 rounded">6M</button>
-            <button className="bg-slate-100 rounded">1Y</button>
-
-            <div
-              class="col-span-1 lg:h-max lg:row-span-1 pt-1 w-max h-max"
-              onClick={handleToggle}
-            >
-              <div class="relative inline-block text-left">
-                <div>
-                  <button
-                    type="button"
-                    class="inline-flex w-full justify-center rounded-md  bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100 "
-                    id="menu-button"
-                    aria-expanded="true"
-                    aria-haspopup="true"
-                  >
-                    {props.type}
-                    <AiFillCaretDown className="w-max h-max p-1 pl-4 pr-0" />
-                  </button>
-                </div>
-                {toggle && (
-                  <div
-                    class="absolute left-0 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="menu-button"
-                    tabindex="-1"
-                  >
-                    <div
-                      className="py-0 px-0 w-24 font-medium text-sm text-gray-600 "
-                      role="none"
-                    >
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-200 w-full"
-                        role="menuitem"
-                        tabindex="-1"
-                        id="menu-item-0"
-                        onClick={handleSelection}
-                      >
-                        USD
-                      </a>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-200"
-                        role="menuitem"
-                        tabindex="-1"
-                        id="menu-item-1"
-                        onClick={handleSelection}
-                      >
-                        INR
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+          <div className="grid grid-cols-3 md:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 p-4 gap-1 2xl:pl-[18%]">
+            {['1D', '1W', '1M', '6M', '1Y'].map((data, index) => {
+              return <Button key={data} data={data} />;
+            })}
+            <DatePicker />
+            <CryptoDropDown />
+            <ChartDropDown />
           </div>
-          <Line
+
+          {/* <Line
             data={{
-              labels: historicalData.map((coin) => {
+              labels: historicalData[0]?.map((coin) => {
                 let date = new Date(coin[0]);
                 let time =
                   date.getHours() > 12
                     ? `${date.getHours() - 12}:${date.getMinutes()} PM`
                     : `${date.getHours()}:${date.getMinutes()} AM`;
-                return days === 1 ? time : date.toLocaleDateString();
+                return props.period === 1 ? time : date.toLocaleDateString();
               }),
 
-              datasets: [
-                {
-                  data: historicalData.map((coin) => {
+              datasets: historicalData?.map((data, index) => {
+                return {
+                  label: props.cryptoList[index],
+                  data: data.map((coin) => {
                     return coin[1];
                   }),
-                  backgroundColor: ['dodgerblue'],
-                  label: 'Bitcoin',
-                  borderColor: 'dodgerblue',
-                },
-              ],
+                  borderColor: colors[index],
+                  backgroundColor: colors[index],
+                };
+              }),
+              // [
+              //   {
+              //     label: 'Bitcoin',
+              //     data: historicalData.map((coin) => {
+              //       return coin[1];
+              //     }),
+              //     borderColor: 'dodgerblue',
+              //     backgroundColor: ['dodgerblue'],
+              //   },
+              // ],
             }}
             options={{
               elements: {
@@ -196,7 +124,8 @@ function Graph(props) {
                 },
               },
             }}
-          />
+          /> */}
+          {/* {setHistoricalData([])} */}
         </>
       )}
     </div>
@@ -206,13 +135,14 @@ function Graph(props) {
 const mapStateToProps = (state) => {
   return {
     type: state.currency.type,
-    symbol: state.currency.symbol,
+    period: state.graph.period,
+    cryptoList: state.graph.cryptoList,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeCurrency: (type, symbol) => dispatch(changeCurrency(type, symbol)),
+    changePeriod: (period) => dispatch(changePeriod(period)),
   };
 };
 

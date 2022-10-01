@@ -3,7 +3,7 @@ import { changeCurrency } from '../redux/currency/currencyActions';
 import { AiFillCaretDown } from 'react-icons/ai';
 import { connect } from 'react-redux';
 
-function SelectorDropDown(props) {
+function ChartDropDown(props) {
   const [toggle, setToggle] = useState(false);
   const [type, setType] = useState('USD');
   const [symbol, setSymbol] = useState('$');
@@ -29,26 +29,23 @@ function SelectorDropDown(props) {
 
   return (
     <>
-      <div
-        class="col-span-1 lg:h-max lg:row-span-1 pt-1 w-max h-max"
-        onClick={handleToggle}
-      >
-        <div class="relative inline-block text-left">
+      <div className="col-span-1 md:col-span-3 xl:col-span-2 2xl:col-span-2 m-1" onClick={handleToggle}>
+        <div className="relative inline-block text-left w-full 2xl:w-max">
           <div>
             <button
               type="button"
-              class="inline-flex w-full justify-center rounded-md  bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100 "
+              className="inline-flex w-full justify-center rounded-md  bg-slate-100 px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
               id="menu-button"
               aria-expanded="true"
               aria-haspopup="true"
             >
               {props.type}
-              <AiFillCaretDown className="w-max h-max p-1 pl-4 pr-0" />
+              <AiFillCaretDown className="w-max h-max p-1 pl-4" />
             </button>
           </div>
           {toggle && (
             <div
-              class="absolute left-0 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              className="absolute left-0 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="menu-button"
@@ -100,4 +97,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectorDropDown);
+export default connect(mapStateToProps, mapDispatchToProps)(ChartDropDown);
