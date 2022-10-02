@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { changeCurrency, changeCryptoList, changeCryptoData } from '../redux';
+import {
+  changeCurrency,
+  addToCryptoList,
+  deleteFromCryptoList,
+  addCryptoData,
+  deleteCryptoData,
+} from '../redux';
 import { AiFillCaretDown } from 'react-icons/ai';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -37,8 +43,13 @@ function CryptoDropDown(props) {
   };
 
   const handleSelection = (e) => {
-    setId(e.target.id);
-    props.changeCryptoList(e.target.id);
+    if (props.cryptoList.includes(e.target.id)) {
+      props.deleteCryptoData(e.target.id);
+    } else {
+      setId(e.target.id);
+      props.addToCryptoList(e.target.id);
+      fetchData()
+    }
   };
 
   const fetchData = async () => {
@@ -47,20 +58,15 @@ function CryptoDropDown(props) {
         HistoricalChart(id, props.type, props.period)
       );
 
-      props.changeCryptoData(id, data.prices);
+      props.addCryptoData(id, data.prices);
     }
   };
 
   useEffect(() => {
-    fetchData();
-    // return () => {
-    //   second;
-    // };
+    if (id) {
+      fetchData();
+    }
   }, [id]);
-
-  useEffect(() => {
-    console.log('Cryto list: ', props.cryptoList);
-  }, [props.cryptoList]);
 
   return (
     <>
@@ -161,8 +167,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     changeCurrency: (type, symbol) => dispatch(changeCurrency(type, symbol)),
-    changeCryptoList: (coin) => dispatch(changeCryptoList(coin)),
-    changeCryptoData: (id, data) => dispatch(changeCryptoData(id, data)),
+    addToCryptoList: (coin) => dispatch(addToCryptoList(coin)),
+    deleteFromCryptoList: (coin) => dispatch(deleteFromCryptoList(coin)),
+    addCryptoData: (id, data) => dispatch(addCryptoData(id, data)),
+    deleteCryptoData: (id) => dispatch(deleteCryptoData(id)),
   };
 };
 

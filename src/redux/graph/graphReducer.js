@@ -13,21 +13,19 @@ const graphReducer = (state = initialState, action) => {
         ...state,
         period: action.payload.period,
       };
-    case actions.CHANGE_CRYPTO_LIST:
-      if (state.cryptoList.includes(action.payload.crypto)) {
-        return {
-          ...state,
-          cryptoList: state.cryptoList.filter(
-            (crypto) => crypto != action.payload.crypto
-          ),
-        };
-      }
+    case actions.ADD_TO_CRYPTO_LIST:
       return {
         ...state,
         cryptoList: [...state.cryptoList, action.payload.crypto],
       };
-    case actions.CHANGE_CRYPTO_DATA:
-      console.log('Change crypto data reducer');
+    case actions.DELETE_FROM_CRYPTO_LIST:
+      return {
+          ...state,
+          cryptoList: state.cryptoList.filter(
+            (crypto) => crypto !== action.payload.crypto
+          ),
+        };
+    case actions.ADD_CRYPTO_DATA:
       return {
         ...state,
         cryptoData: [
@@ -35,6 +33,8 @@ const graphReducer = (state = initialState, action) => {
           { id: action.payload.id, data: action.payload.data },
         ],
       };
+    case actions.DELETE_CRYPTO_DATA:
+      return {...state, cryptoData:state.cryptoData.filter((crypto) => crypto.id !== action.payload.id)}
 
     default:
       return state;
