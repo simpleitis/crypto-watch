@@ -44,11 +44,13 @@ function CryptoDropDown(props) {
 
   const handleSelection = (e) => {
     if (props.cryptoList.includes(e.target.id)) {
+      props.deleteFromCryptoList(e.target.id)
       props.deleteCryptoData(e.target.id);
     } else {
       setId(e.target.id);
+      // handle deletion and selection of the same coin
       props.addToCryptoList(e.target.id);
-      fetchData()
+      fetchData();
     }
   };
 
@@ -66,6 +68,7 @@ function CryptoDropDown(props) {
     if (id) {
       fetchData();
     }
+    setId('')
   }, [id]);
 
   return (

@@ -77,16 +77,6 @@ function Graph(props) {
                   backgroundColor: colors[index],
                 };
               }),
-              // [
-              //   {
-              //     label: 'Bitcoin',
-              //     data: historicalData.map((coin) => {
-              //       return coin[1];
-              //     }),
-              //     borderColor: 'dodgerblue',
-              //     backgroundColor: ['dodgerblue'],
-              //   },
-              // ],
             }}
             options={{
               elements: {

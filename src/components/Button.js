@@ -1,17 +1,25 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { changePeriod } from '../redux';
+import { addCryptoData, changePeriod, deleteAllData, setNewData } from '../redux';
+import { HistoricalChart } from '../config/api';
 
 function Button(props) {
   const [period, setPeriod] = useState(1);
 
-  const periods = {'1D': 1, '1W': 7, '1M': 30, '6M': 182, '1Y': 364}
+  const periods = { '1D': 1, '1W': 7, '1M': 30, '6M': 182, '1Y': 364 };
 
   const handleClick = (e) => {
     props.changePeriod(periods[e.target.innerText]);
+    props.deleteAllData();
+    props.cryptoList?.map(async (crypto) => {
+      const { data } = await axios.get(
+        HistoricalChart(crypto, props.type, props.period)
+      );
+
+      props.addCryptoData(crypto, data.prices);
+    });
   };
-
-
 
   return (
     <div className="col-span-1 2xl:col-span-1 my-2 mx-0.5">
@@ -25,10 +33,20 @@ function Button(props) {
   );
 }
 
+const mapStateToProps = (state) => {
+  return {
+    type: state.currency.type,
+    period: state.graph.period,
+    cryptoList: state.graph.cryptoList,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     changePeriod: (period) => dispatch(changePeriod(period)),
+    deleteAllData: () => dispatch(deleteAllData()),
+    setNewData: (data) => dispatch(setNewData(data)),
+    addCryptoData: (id, data) => dispatch(addCryptoData(id, data)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(Button);
+export default connect(mapStateToProps, mapDispatchToProps)(Button);

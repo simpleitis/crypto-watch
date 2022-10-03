@@ -16,7 +16,7 @@ export const addToCryptoList = (crypto) => {
 
 export const deleteFromCryptoList = (crypto) => {
   return {
-    type: actions.DELETE_CRYPTO_DATA,
+    type: actions.DELETE_FROM_CRYPTO_LIST,
     payload: {
       crypto: crypto,
     },
@@ -34,5 +34,18 @@ export const deleteCryptoData = (id) => {
   return {
     type: actions.DELETE_CRYPTO_DATA,
     payload: { id: id },
+  };
+};
+
+export const deleteAllData = () => {
+  return {
+    type: actions.DELETE_ALL_DATA,
+  };
+};
+
+export const setNewData = (newData) => {
+  return {
+    type: actions.SET_NEW_DATA,
+    payload: { newData: newData },
   };
 };

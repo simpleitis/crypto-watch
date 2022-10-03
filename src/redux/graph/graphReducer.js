@@ -1,7 +1,7 @@
 import * as actions from './graphType';
 
 const initialState = {
-  period: 10,
+  period: 1,
   cryptoList: [],
   cryptoData: [],
 };
@@ -20,11 +20,11 @@ const graphReducer = (state = initialState, action) => {
       };
     case actions.DELETE_FROM_CRYPTO_LIST:
       return {
-          ...state,
-          cryptoList: state.cryptoList.filter(
-            (crypto) => crypto !== action.payload.crypto
-          ),
-        };
+        ...state,
+        cryptoList: state.cryptoList.filter(
+          (crypto) => crypto !== action.payload.crypto
+        ),
+      };
     case actions.ADD_CRYPTO_DATA:
       return {
         ...state,
@@ -34,8 +34,20 @@ const graphReducer = (state = initialState, action) => {
         ],
       };
     case actions.DELETE_CRYPTO_DATA:
-      return {...state, cryptoData:state.cryptoData.filter((crypto) => crypto.id !== action.payload.id)}
+      return {
+        ...state,
+        cryptoData: state.cryptoData.filter(
+          (crypto) => crypto.id !== action.payload.id
+        ),
+      };
+    case actions.DELETE_ALL_DATA:
+      return { ...state, cryptoData: [] };
 
+    case actions.SET_NEW_DATA:
+      return {
+        ...state,
+        cryptoData: action.payload.newData,
+      };
     default:
       return state;
   }
