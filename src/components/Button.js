@@ -5,8 +5,6 @@ import { addCryptoData, changePeriod, deleteAllData, setNewData } from '../redux
 import { HistoricalChart } from '../config/api';
 
 function Button(props) {
-  const [period, setPeriod] = useState(1);
-
   const periods = { '1D': 1, '1W': 7, '1M': 30, '6M': 182, '1Y': 364 };
 
   const handleClick = (e) => {
@@ -14,7 +12,7 @@ function Button(props) {
     props.deleteAllData();
     props.cryptoList?.map(async (crypto) => {
       const { data } = await axios.get(
-        HistoricalChart(crypto, props.type, props.period)
+        HistoricalChart(crypto, props.type, periods[e.target.innerText])
       );
 
       props.addCryptoData(crypto, data.prices);

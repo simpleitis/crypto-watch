@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import { BiCalendar } from 'react-icons/bi';
 import 'react-day-picker/dist/style.css';
+import { connect } from 'react-redux';
+import {
+  addCryptoData,
+  changePeriod,
+  deleteAllData,
+  setNewData,
+} from '../redux';
+import { HistoricalChart } from '../config/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function DatePicker() {
+function DatePicker(props) {
   const [selected, setSelected] = React.useState();
   const [toggle, setToggle] = useState(false);
 
@@ -13,8 +24,40 @@ function DatePicker() {
   };
 
   const handleSelection = (data) => {
-    setSelected(data);
-    setToggle(!toggle)
+    const selectedDate = format(data, 'T');
+    const currentDate = format(Date.now(), 'T');
+
+    if (selectedDate > currentDate) {
+      toast.error('Select a date less than the current date!', {
+        position: 'bottom-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored'
+      });
+    } else {
+      const oneDay = 1000 * 60 * 60 * 24;
+      const diffInTime = currentDate - selectedDate;
+      const diffInDays = Math.round(diffInTime / oneDay);
+
+      props.changePeriod(diffInDays);
+      props.deleteAllData();
+
+      props.cryptoList?.map(async (crypto) => {
+        const { data } = await axios.get(
+          HistoricalChart(crypto, props.type, diffInDays)
+        );
+
+        props.addCryptoData(crypto, data.prices);
+      });
+
+      setSelected(data);
+    }
+
+    setToggle(!toggle);
   };
 
   return (
@@ -38,8 +81,35 @@ function DatePicker() {
           />
         </div>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 }
 
-export default DatePicker;
+const mapStateToProps = (state) => {
+  return {
+    type: state.currency.type,
+    period: state.graph.period,
+    cryptoList: state.graph.cryptoList,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changePeriod: (period) => dispatch(changePeriod(period)),
+    deleteAllData: () => dispatch(deleteAllData()),
+    setNewData: (data) => dispatch(setNewData(data)),
+    addCryptoData: (id, data) => dispatch(addCryptoData(id, data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DatePicker);

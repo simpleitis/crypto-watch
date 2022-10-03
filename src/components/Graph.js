@@ -1,7 +1,16 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Line } from 'react-chartjs-2';
+import { Line, Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import Chart from 'chart.js/auto';
 import Button from './Button';
 import CryptoDropDown from './CryptoDropDown';
@@ -10,21 +19,34 @@ import DatePicker from './DatePicker';
 import { changePeriod } from '../redux';
 import HashLoader from 'react-spinners/HashLoader';
 
-const CSSProperties = {
-  display: 'block',
-  margin: '0 auto',
-  borderColor: 'red',
-};
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function Graph(props) {
   const [loading, setLoading] = useState(true);
   const [color, setColor] = useState('#ffffff');
 
-  const colors = ['#007cff', '#ff6384', '#15cb85', '#ffcd57'];
+  const colors = [
+    '#007cff',
+    '#ff6384',
+    '#15cb85',
+    '#ffcd57',
+    '#36C9C6',
+    '#F7E8A4',
+    '#73877B',
+    '#00171F',
+    '#88498F',
+    '#ED6A5A',
+  ];
 
   useEffect(() => {
     props.cryptoData[0]?.data ? setLoading(false) : setLoading(true);
-    console.log(props?.cryptoData?.length);
   }, [props.cryptoData]);
 
   return (
@@ -42,12 +64,7 @@ function Graph(props) {
         {loading ? (
           <div className="flex flex-col flex-wrap align-middle">
             <center className="py-5">
-              <HashLoader
-                color="#1976d2"
-                loading={loading}
-                cssOverride={CSSProperties}
-                size={50}
-              />
+              <HashLoader color="#1976d2" loading={loading} size={50} />
 
               <p className="text-slate-500 font-semibold pt-10">
                 Please select a crypto currency from dropdown to see graphical
@@ -56,65 +73,117 @@ function Graph(props) {
             </center>
           </div>
         ) : (
-          <Line
-            data={{
-              labels: props.cryptoData[0]?.data?.map((coin) => {
-                let date = new Date(coin[0]);
-                let time =
-                  date.getHours() > 12
-                    ? `${date.getHours() - 12}:${date.getMinutes()} PM`
-                    : `${date.getHours()}:${date.getMinutes()} AM`;
-                return props.period === 1 ? time : date.toLocaleDateString();
-              }),
+          <>
+            <Line
+              data={{
+                labels: props.cryptoData[0]?.data?.map((coin) => {
+                  let date = new Date(coin[0]);
+                  let time =
+                    date.getHours() > 12
+                      ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+                      : `${date.getHours()}:${date.getMinutes()} AM`;
+                  return props.period === 1 ? time : date.toLocaleDateString();
+                }),
 
-              datasets: props.cryptoData.map((crypto, index) => {
-                return {
-                  label: crypto.id,
-                  data: crypto.data?.map((coin) => {
-                    return coin[1];
-                  }),
-                  borderColor: colors[index],
-                  backgroundColor: colors[index],
-                };
-              }),
-            }}
-            options={{
-              elements: {
-                point: {
-                  radius: 1,
-                },
-              },
-              scales: {
-                x: {
-                  grid: {
-                    display: false,
-                  },
-                  ticks: {
-                    maxTicksLimit: 6,
+                datasets: props.cryptoData.map((crypto, index) => {
+                  return {
+                    label: crypto.id,
+                    data: crypto.data?.map((coin) => {
+                      return coin[1];
+                    }),
+                    borderColor: colors[index],
+                    backgroundColor: colors[index],
+                  };
+                }),
+              }}
+              options={{
+                elements: {
+                  point: {
+                    radius: 1,
                   },
                 },
-                y: {
-                  grid: {
-                    display: false,
+                scales: {
+                  x: {
+                    grid: {
+                      display: false,
+                    },
+                    ticks: {
+                      maxTicksLimit: 6,
+                    },
                   },
-                  ticks: {
-                    maxTicksLimit: 5,
+                  y: {
+                    grid: {
+                      display: false,
+                    },
+                    ticks: {
+                      maxTicksLimit: 5,
+                    },
                   },
                 },
-              },
-              plugins: {
-                legend: {
-                  display: true,
-                  position: 'top',
-                  align: 'end',
-                  labels: {
-                    color: 'dodgerblue',
-                    usePointStyle: true,
+                plugins: {
+                  legend: {
+                    display: true,
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                      color: 'dodgerblue',
+                      usePointStyle: true,
+                    },
                   },
                 },
-              },
-            }}
-          />
+              }}
+            />
+
+            <Bar
+              data={{
+                labels: props.cryptoData[0]?.data?.map((coin) => {
+                  let date = new Date(coin[0]);
+                  let time =
+                    date.getHours() > 12
+                      ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+                      : `${date.getHours()}:${date.getMinutes()} AM`;
+                  return props.period === 1 ? time : date.toLocaleDateString();
+                }),
+
+                datasets: props.cryptoData.map((crypto, index) => {
+                  return {
+                    label: crypto.id,
+                    data: crypto.data?.map((coin) => {
+                      return coin[1];
+                    }),
+                    borderColor: colors[index],
+                    backgroundColor: colors[index],
+                  };
+                }),
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                  },
+                },
+                scales: {
+                  x: {
+                    grid: {
+                      display: false,
+                    },
+                    ticks: {
+                      maxTicksLimit: 6,
+                    },
+                  },
+                  y: {
+                    grid: {
+                      display: false,
+                    },
+                    ticks: {
+                      maxTicksLimit: 5,
+                    },
+                  },
+                },
+              }}
+            />
+          </>
         )}
       </>
     </div>
