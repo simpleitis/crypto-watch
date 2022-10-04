@@ -32,6 +32,8 @@ function Graph(props) {
   const [loading, setLoading] = useState(true);
   const [color, setColor] = useState('#ffffff');
 
+  const indices = [0, 50, 100, 200, 250, 350];
+
   const colors = [
     '#007cff',
     '#ff6384',
@@ -44,6 +46,15 @@ function Graph(props) {
     '#88498F',
     '#ED6A5A',
   ];
+
+  let barData = props.cryptoData.map((crypto) => {
+    let newData = crypto.data.filter((data, index) => 
+     indices.includes(index)
+    );
+    return { id: crypto.id, data: newData };
+  });
+
+  console.log(barData);
 
   useEffect(() => {
     props.cryptoData[0]?.data ? setLoading(false) : setLoading(true);
@@ -134,23 +145,46 @@ function Graph(props) {
               }}
             />
 
+            {/* const barData = props.cryptoData.map((crypto, index) => {
+    const newData = crypto.data.filter((data, index) => {
+      if (index in indices) {
+        return data;
+      }
+    });
+    setBar
+    return {
+      id: crypto.id,
+      data: newData,
+    };
+  }); */}
+
             <Bar
               data={{
-                labels: props.cryptoData[0]?.data?.map((coin) => {
-                  let date = new Date(coin[0]);
-                  let time =
-                    date.getHours() > 12
-                      ? `${date.getHours() - 12}:${date.getMinutes()} PM`
-                      : `${date.getHours()}:${date.getMinutes()} AM`;
-                  return props.period === 1 ? time : date.toLocaleDateString();
-                }),
+                labels: props.cryptoData[0]?.data
+                  ?.filter((data, index) => 
+                    indices.includes(index)
+                  )
+                  .map((coin, index) => {
+                    let date = new Date(coin[0]);
+                    let time =
+                      date.getHours() > 12
+                        ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+                        : `${date.getHours()}:${date.getMinutes()} AM`;
+                    return props.period === 1
+                      ? time
+                      : date.toLocaleDateString();
+                  }),
 
                 datasets: props.cryptoData.map((crypto, index) => {
                   return {
                     label: crypto.id,
-                    data: crypto.data?.map((coin) => {
-                      return coin[1];
-                    }),
+                    data: crypto.data
+                      ?.filter((data, index) => 
+                        indices.includes(index)
+                      )
+                      .map((coin) => {
+                        return coin[1];
+                      }),
                     borderColor: colors[index],
                     backgroundColor: colors[index],
                   };
@@ -158,6 +192,9 @@ function Graph(props) {
               }}
               options={{
                 responsive: true,
+                isFixedWidth: false,
+
+                barWidth: 20,
                 plugins: {
                   legend: {
                     position: 'top',
