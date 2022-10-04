@@ -4,7 +4,7 @@ import store from './redux/store';
 import SearchBar from './components/SearchBar';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import Graph from './components/Graph';
+import Chart from './components/Chart';
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
         <SelectorDropDown />
         <SearchBar />
         <Sidebar />
-        <Graph />
+        <Chart />
       </div>
     </Provider>
   );

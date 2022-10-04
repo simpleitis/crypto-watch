@@ -6,3 +6,4 @@ export { addCryptoData } from './graph/graphActions';
 export { deleteCryptoData } from './graph/graphActions';
 export { deleteAllData } from './graph/graphActions';
 export { setNewData } from './graph/graphActions';
+export { changeChartType } from './graph/graphActions';

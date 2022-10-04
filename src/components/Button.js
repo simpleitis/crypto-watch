@@ -20,7 +20,7 @@ function Button(props) {
   };
 
   return (
-    <div className="col-span-1 2xl:col-span-1 my-2 mx-0.5">
+    <div className="col-span-1  2xl:col-span-1 my-2 mx-0.5">
       <button
         className="py-1 md:py-2 bg-slate-100 hover:ring-2 hover:outline-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-gray-100 focus:bg-blue-200 focus:text-blue-500 font-semibold rounded-lg h-full w-full"
         onClick={handleClick}

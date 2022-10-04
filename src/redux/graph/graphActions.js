@@ -49,3 +49,11 @@ export const setNewData = (newData) => {
     payload: { newData: newData },
   };
 };
+
+export const changeChartType = (chart) => {
+  console.log('Action creator', chart)
+  return {
+    type: actions.CHANGE_CHART_TYPE,
+    payload: { chart: chart },
+  };
+};

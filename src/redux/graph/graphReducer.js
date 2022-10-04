@@ -4,6 +4,7 @@ const initialState = {
   period: 1,
   cryptoList: [],
   cryptoData: [],
+  chartType: 'line',
 };
 
 const graphReducer = (state = initialState, action) => {
@@ -13,11 +14,13 @@ const graphReducer = (state = initialState, action) => {
         ...state,
         period: action.payload.period,
       };
+
     case actions.ADD_TO_CRYPTO_LIST:
       return {
         ...state,
         cryptoList: [...state.cryptoList, action.payload.crypto],
       };
+
     case actions.DELETE_FROM_CRYPTO_LIST:
       return {
         ...state,
@@ -25,6 +28,7 @@ const graphReducer = (state = initialState, action) => {
           (crypto) => crypto !== action.payload.crypto
         ),
       };
+
     case actions.ADD_CRYPTO_DATA:
       return {
         ...state,
@@ -33,6 +37,7 @@ const graphReducer = (state = initialState, action) => {
           { id: action.payload.id, data: action.payload.data },
         ],
       };
+
     case actions.DELETE_CRYPTO_DATA:
       return {
         ...state,
@@ -40,6 +45,7 @@ const graphReducer = (state = initialState, action) => {
           (crypto) => crypto.id !== action.payload.id
         ),
       };
+
     case actions.DELETE_ALL_DATA:
       return { ...state, cryptoData: [] };
 
@@ -48,6 +54,11 @@ const graphReducer = (state = initialState, action) => {
         ...state,
         cryptoData: action.payload.newData,
       };
+
+    case actions.CHANGE_CHART_TYPE:
+      console.log(action.payload.chart);
+      return { ...state, chartType: action.payload.chart };
+
     default:
       return state;
   }

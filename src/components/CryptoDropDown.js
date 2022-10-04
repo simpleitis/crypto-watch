@@ -73,7 +73,7 @@ function CryptoDropDown(props) {
 
   return (
     <>
-      <div className="col-span-1 md:col-span-3 xl:col-span-2 xl:row-span-2 2xl:col-span-2 m-1">
+      <div className="col-span-1 md:col-span-3 xl:col-span-2 xl:row-span-3 2xl:col-span-2 m-1">
         <div className="relative inline-block text-left w-full 2xl:w-max ">
           <div>
             <button
