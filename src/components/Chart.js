@@ -59,6 +59,131 @@ function Chart(props) {
     }
   }, [props.cryptoData, props.chartType]);
 
+  const lineData = {
+    labels: props.cryptoData[0]?.data?.map((coin) => {
+      let date = new Date(coin[0]);
+      let time =
+        date.getHours() > 12
+          ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+          : `${date.getHours()}:${date.getMinutes()} AM`;
+      return props.period === 1 ? time : date.toLocaleDateString();
+    }),
+
+    datasets: props.cryptoData.map((crypto, index) => {
+      return {
+        label: crypto.id,
+        data: crypto.data?.map((coin) => {
+          return coin[1];
+        }),
+        borderColor: colors[index],
+        backgroundColor: colors[index],
+      };
+    }),
+  };
+
+  const lineOptions = {
+    elements: {
+      point: {
+        radius: 1,
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          maxTicksLimit: 6,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          maxTicksLimit: 5,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        align: 'end',
+        labels: {
+          color: 'dodgerblue',
+          usePointStyle: true,
+        },
+      },
+    },
+  };
+
+  const barData = {
+    labels: props.cryptoData[0]?.data
+      ?.filter((data, index) => indices.includes(index))
+      .map((coin, index) => {
+        let date = new Date(coin[0]);
+        let time =
+          date.getHours() > 12
+            ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+            : `${date.getHours()}:${date.getMinutes()} AM`;
+        return props.period === 1 ? time : date.toLocaleDateString();
+      }),
+
+    datasets: props.cryptoData.map((crypto, index) => {
+      return {
+        label: crypto.id,
+        data: crypto.data
+          ?.filter((data, index) => indices.includes(index))
+          .map((coin) => {
+            return coin[1];
+          }),
+        borderColor: colors[index],
+        backgroundColor: colors[index],
+      };
+    }),
+  };
+  const barOptions = {
+    responsive: true,
+    isFixedWidth: false,
+
+    barWidth: 20,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          maxTicksLimit: 6,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          maxTicksLimit: 5,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        align: 'end',
+        labels: {
+          color: 'dodgerblue',
+          usePointStyle: true,
+        },
+      },
+    },
+  };
+
   return (
     <div className="col-span-1 md:col-span-6 lg:col-span-5 lg:row-span-1 xl:col-span-7 2xl:col-span-9 bg-white rounded">
       <>
@@ -85,137 +210,9 @@ function Chart(props) {
         ) : (
           <>
             {line ? (
-              <Line
-                data={{
-                  labels: props.cryptoData[0]?.data?.map((coin) => {
-                    let date = new Date(coin[0]);
-                    let time =
-                      date.getHours() > 12
-                        ? `${date.getHours() - 12}:${date.getMinutes()} PM`
-                        : `${date.getHours()}:${date.getMinutes()} AM`;
-                    return props.period === 1
-                      ? time
-                      : date.toLocaleDateString();
-                  }),
-
-                  datasets: props.cryptoData.map((crypto, index) => {
-                    return {
-                      label: crypto.id,
-                      data: crypto.data?.map((coin) => {
-                        return coin[1];
-                      }),
-                      borderColor: colors[index],
-                      backgroundColor: colors[index],
-                    };
-                  }),
-                }}
-                options={{
-                  elements: {
-                    point: {
-                      radius: 1,
-                    },
-                  },
-                  scales: {
-                    x: {
-                      grid: {
-                        display: false,
-                      },
-                      ticks: {
-                        maxTicksLimit: 6,
-                      },
-                    },
-                    y: {
-                      grid: {
-                        display: false,
-                      },
-                      ticks: {
-                        maxTicksLimit: 5,
-                      },
-                    },
-                  },
-                  plugins: {
-                    legend: {
-                      display: true,
-                      position: 'top',
-                      align: 'end',
-                      labels: {
-                        color: 'dodgerblue',
-                        usePointStyle: true,
-                      },
-                    },
-                  },
-                }}
-              />
+              <Line data={lineData} options={lineOptions} />
             ) : (
-              <Bar
-                data={{
-                  labels: props.cryptoData[0]?.data
-                    ?.filter((data, index) => indices.includes(index))
-                    .map((coin, index) => {
-                      let date = new Date(coin[0]);
-                      let time =
-                        date.getHours() > 12
-                          ? `${date.getHours() - 12}:${date.getMinutes()} PM`
-                          : `${date.getHours()}:${date.getMinutes()} AM`;
-                      return props.period === 1
-                        ? time
-                        : date.toLocaleDateString();
-                    }),
-
-                  datasets: props.cryptoData.map((crypto, index) => {
-                    return {
-                      label: crypto.id,
-                      data: crypto.data
-                        ?.filter((data, index) => indices.includes(index))
-                        .map((coin) => {
-                          return coin[1];
-                        }),
-                      borderColor: colors[index],
-                      backgroundColor: colors[index],
-                    };
-                  }),
-                }}
-                options={{
-                  responsive: true,
-                  isFixedWidth: false,
-
-                  barWidth: 20,
-                  plugins: {
-                    legend: {
-                      position: 'top',
-                    },
-                  },
-                  scales: {
-                    x: {
-                      grid: {
-                        display: false,
-                      },
-                      ticks: {
-                        maxTicksLimit: 6,
-                      },
-                    },
-                    y: {
-                      grid: {
-                        display: false,
-                      },
-                      ticks: {
-                        maxTicksLimit: 5,
-                      },
-                    },
-                  },
-                  plugins: {
-                    legend: {
-                      display: true,
-                      position: 'top',
-                      align: 'end',
-                      labels: {
-                        color: 'dodgerblue',
-                        usePointStyle: true,
-                      },
-                    },
-                  },
-                }}
-              />
+              <Bar data={barData} options={barOptions} />
             )}
           </>
         )}

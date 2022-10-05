@@ -9,13 +9,21 @@ import {
 import { AiFillCaretDown } from 'react-icons/ai';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { CoinList, HistoricalChart } from '../config/api';
+import { HistoricalChart } from '../config/api';
 
 function CryptoDropDown(props) {
   const [toggle, setToggle] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [id, setId] = useState();
+
+  const fetchCoins = async () => {
+    if (props.cryptoInfo) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  };
 
   const handleToggle = () => {
     setToggle(!toggle);
@@ -23,9 +31,9 @@ function CryptoDropDown(props) {
 
   const handleSearch = () => {
     return props?.cryptoInfo?.filter(
-      (crytpo) =>
-        crytpo.name.toLowerCase().includes(search.toLowerCase()) ||
-        crytpo.symbol.toLowerCase().includes(search.toLowerCase())
+      (crypto) =>
+        crypto.name.toLowerCase().includes(search.toLowerCase()) ||
+        crypto.symbol.toLowerCase().includes(search.toLowerCase())
     );
   };
 
@@ -57,6 +65,10 @@ function CryptoDropDown(props) {
     }
     setId('');
   }, [id]);
+
+  useEffect(() => {
+    fetchCoins();
+  }, [props.cryptoInfo]);
 
   return (
     <>

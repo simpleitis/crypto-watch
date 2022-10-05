@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Chart from './components/Chart';
 import PieChart from './components/PieChart';
+import Exchange from './components/Exchange';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Sidebar />
         <Chart />
         <PieChart />
+        <Exchange />
       </div>
     </Provider>
   );
