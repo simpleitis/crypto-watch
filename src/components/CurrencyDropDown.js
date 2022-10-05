@@ -17,7 +17,8 @@ function SelectorDropDown(props) {
   };
 
   const handleSelection = (e) => {
-    console.log(e.target.innerText);
+    setType(e.target.innerText)
+    
     if (e.target.innerText === 'USD') {
       setType('USD');
       setSymbol('$');
@@ -52,7 +53,6 @@ function SelectorDropDown(props) {
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="menu-button"
-              tabindex="-1"
             >
               <div
                 className="py-0 px-0 w-24 font-medium text-sm text-gray-600 "
@@ -62,7 +62,6 @@ function SelectorDropDown(props) {
                   href="#"
                   className="block px-4 py-2 hover:bg-gray-200 w-full"
                   role="menuitem"
-                  tabindex="-1"
                   id="menu-item-0"
                   onClick={handleSelection}
                 >
@@ -72,7 +71,6 @@ function SelectorDropDown(props) {
                   href="#"
                   className="block px-4 py-2 hover:bg-gray-200"
                   role="menuitem"
-                  tabindex="-1"
                   id="menu-item-1"
                   onClick={handleSelection}
                 >

@@ -15,36 +15,23 @@ function CryptoDropDown(props) {
   const [toggle, setToggle] = useState(false);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [coins, setCoins] = useState();
   const [id, setId] = useState();
-
-  const fetchCoins = async () => {
-    setLoading(true);
-    const { data } = await axios.get(CoinList(props.type));
-
-    setCoins(data);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchCoins();
-  }, [props.type]);
 
   const handleToggle = () => {
     setToggle(!toggle);
   };
 
   const handleSearch = () => {
-    return coins.filter(
-      (coin) =>
-        coin.name.toLowerCase().includes(search.toLowerCase()) ||
-        coin.symbol.toLowerCase().includes(search.toLowerCase())
+    return props?.cryptoInfo?.filter(
+      (crytpo) =>
+        crytpo.name.toLowerCase().includes(search.toLowerCase()) ||
+        crytpo.symbol.toLowerCase().includes(search.toLowerCase())
     );
   };
 
   const handleSelection = (e) => {
     if (props.cryptoList.includes(e.target.id)) {
-      props.deleteFromCryptoList(e.target.id)
+      props.deleteFromCryptoList(e.target.id);
       props.deleteCryptoData(e.target.id);
     } else {
       setId(e.target.id);
@@ -68,7 +55,7 @@ function CryptoDropDown(props) {
     if (id) {
       fetchData();
     }
-    setId('')
+    setId('');
   }, [id]);
 
   return (
@@ -164,6 +151,7 @@ const mapStateToProps = (state) => {
     type: state.currency.type,
     period: state.graph.period,
     cryptoList: state.graph.cryptoList,
+    cryptoInfo: state.crypto.cryptoInfo,
   };
 };
 

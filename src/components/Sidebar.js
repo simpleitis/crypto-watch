@@ -5,16 +5,16 @@ import { CoinList } from '../config/api';
 import { changeCurrency } from '../redux/currency/currencyActions';
 import { AiFillCaretDown, AiFillCaretUp } from 'react-icons/ai';
 import millify from 'millify';
+import { updateCryptoInfo } from '../redux';
 
 function Sidebar(props) {
-  const [coins, setCoins] = useState();
   const [loading, setLoading] = useState(false);
 
   const fetchCoins = async () => {
     setLoading(true);
     const { data } = await axios.get(CoinList(props.type));
 
-    setCoins(data);
+    props.updateCryptoInfo(data);
     setLoading(false);
   };
 
@@ -23,7 +23,7 @@ function Sidebar(props) {
   }, [props.type]);
 
   return (
-    <div className="col-span-1 md:col-span-6 lg:col-span-3 lg:row-span-3 xl:col-span-3 2xl:col-span-3 md:justify-center w-full">
+    <div className="col-span-1 md:col-span-6 lg:col-span-3 lg:row-span-6 xl:col-span-3 2xl:col-span-3 md:justify-center w-full">
       {loading ? (
         <div className="flex flex-row justify-center">
           <button
@@ -60,9 +60,9 @@ function Sidebar(props) {
             Cryptocurrency by
             <br /> market cap
           </p>
-          {coins?.map((coin) => {
+          {props.cryptoInfo?.map((coin) => {
             const profit = coin.price_change_percentage_24h > 0;
-            
+
             return (
               <div key={coin.id}>
                 <div className="my-2 py-4">
@@ -116,12 +116,14 @@ const mapStateToProps = (state) => {
   return {
     type: state.currency.type,
     symbol: state.currency.symbol,
+    cryptoInfo: state.crypto.cryptoInfo,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     changeCurrency: (type, symbol) => dispatch(changeCurrency(type, symbol)),
+    updateCryptoInfo: (info) => dispatch(updateCryptoInfo(info)),
   };
 };
 

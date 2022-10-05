@@ -5,6 +5,7 @@ import SearchBar from './components/SearchBar';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Chart from './components/Chart';
+import PieChart from './components/PieChart';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <SearchBar />
         <Sidebar />
         <Chart />
+        <PieChart />
       </div>
     </Provider>
   );

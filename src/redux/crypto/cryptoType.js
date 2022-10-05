@@ -1,0 +1,1 @@
+export const UPDATE_CRYPTO_INFO = 'UPDATE_CRYPTO_INFO';
