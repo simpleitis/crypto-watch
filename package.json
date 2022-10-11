@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "chart.js": "^3.9.1",
     "coingecko-api": "^1.0.10",
+    "currency-symbol-map": "^5.1.0",
     "date-fns": "^2.29.3",
     "millify": "^5.0.1",
     "react": "^18.2.0",

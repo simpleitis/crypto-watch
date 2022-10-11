@@ -56,7 +56,6 @@ const graphReducer = (state = initialState, action) => {
       };
 
     case actions.CHANGE_CHART_TYPE:
-      console.log(action.payload.chart);
       return { ...state, chartType: action.payload.chart };
 
     default:

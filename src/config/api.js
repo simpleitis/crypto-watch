@@ -6,3 +6,6 @@ export const HistoricalChart = (id, currency, days) =>
 
 export const CurrencyList = () =>
   `https://api.coingecko.com/api/v3/simple/supported_vs_currencies`;
+
+export const ExchangeRate = (id, currency) =>
+  `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${currency}`;

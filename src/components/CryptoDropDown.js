@@ -85,7 +85,7 @@ function CryptoDropDown(props) {
             </button>
           </div>
           {toggle && (
-            <div className="z-100 w-48 bg-white rounded shadow-md mt-1.5 p-0.5 border">
+            <div className="absolute z-10 w-48 bg-white rounded shadow-md mt-1.5 p-0.5 border">
               <input
                 type="search"
                 className="m-3 w-[88%] border p-2 text-sm text-gray-900 bg-red-50 rounded-lg border-gray-300 focus:ring-1 focus:ring-red-400 focus:border-red-400 outline-none"
