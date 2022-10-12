@@ -13,8 +13,9 @@ function Exchange(props) {
   const [sellCurrency, setSellCurrency] = useState();
   const [buyCurrency, setBuyCurrency] = useState();
   const [sellValue, setSellValue] = useState(0);
-  const [buyValue, setBuyValue] = useState(0)
+  const [buyValue, setBuyValue] = useState(0);
   const [exchangeData, setExchangeData] = useState();
+  const [currencyType, setCurrencyType] = useState('');
 
   const currencySymbolMap = [
     { name: 'Bitcoin', id: 'btc', symbol: getSymbolFromCurrency('btc') },
@@ -38,11 +39,13 @@ function Exchange(props) {
   };
 
   const handleSellSearch = () => {
-    return currencySymbolMap.slice(0,5).filter(
-      (crypto) =>
-        crypto.name.toLowerCase().includes(search.toLowerCase()) ||
-        crypto.id.toLowerCase().includes(search.toLowerCase())
-    );
+    return currencySymbolMap
+      .slice(0, 5)
+      .filter(
+        (crypto) =>
+          crypto.name.toLowerCase().includes(search.toLowerCase()) ||
+          crypto.id.toLowerCase().includes(search.toLowerCase())
+      );
   };
 
   const handleBuySearch = () => {
@@ -71,8 +74,9 @@ function Exchange(props) {
   };
 
   const calculateExchangeValue = () => {
-    const value = (exchangeData/100)*(sellValue*100)
-    setBuyValue(value)
+    const value = (exchangeData / 100) * (sellValue * 100);
+    setBuyValue(value);
+    setCurrencyType(buyCurrency);
   };
 
   useEffect(() => {
@@ -81,24 +85,36 @@ function Exchange(props) {
     }
   }, [sellCurrency, buyCurrency]);
 
-
   return (
     <div className="sm:col-span-1 md:col-span-3 lg:col-span-3 lg:h-max lg:row-span-1 xl:col-span-4 2xl:col-span-5 h-full w-full bg-white shadow-md p-5 rounded-md">
       <p className="font-bold">Exchange Coins</p>
-      <div className="py-5">
-        <div className="flex flex-wrap justify-evenly py-2">
-          <p className="font-semibold text-orange-400 pt-1">Sell</p>
-          <div className="relative text-left w-max px-1">
-            <div>
-              <button
-                type="button"
-                className="inline-flex w-max justify-center rounded-md  bg-slate-100 px-6 py-2 mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
-                onClick={handleSellToggle}
-              >
-                Coin
-                <AiFillCaretDown className="w-max h-max p-1 pl-4" />
-              </button>
-            </div>
+      <div className="flex mt-4">
+        <p className="font-semibold text-orange-400 pt-1">Sell</p>
+        <div className="grid grid-cols-6 ml-3 sm:ml-7 md:ml-5">
+          <div className="col-span-2 sm:col-span-1 md:col-span-2 relative text-left w-full">
+            {sellCurrency ? (
+              <div className="w-full">
+                <button
+                  type="button"
+                  className="flex w-max justify-center rounded-md  bg-slate-100 px-6 py-2 mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                  onClick={handleSellToggle}
+                >
+                  {sellCurrency.charAt(0).toUpperCase() + sellCurrency.slice(1)}
+                  <AiFillCaretDown className="w-max h-max p-1 pl-4" />
+                </button>
+              </div>
+            ) : (
+              <div className="w-full">
+                <button
+                  type="button"
+                  className="flex w-full justify-center rounded-md  bg-slate-100 py-2 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                  onClick={handleSellToggle}
+                >
+                  Coin
+                  <AiFillCaretDown className="w-max h-max p-1 pl-4" />
+                </button>
+              </div>
+            )}
             {sellToggle && (
               <div className="absolute z-10 w-48 bg-white rounded shadow-md mt-1.5 p-0.5 border">
                 <input
@@ -107,7 +123,6 @@ function Exchange(props) {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
-
                 {loading ? (
                   <div className="flex flex-row justify-center">
                     <button
@@ -165,30 +180,168 @@ function Exchange(props) {
               </div>
             )}
           </div>
-          <input
-            className="border w-32 mx-1 rounded-md px-2 focus:outline-none"
-            placeholder="Amount"
-            type="text"
-            onChange={(e) => {
-              setSellValue(e.target.value);
-            }}
-          />
+          <div className="grid-cols-4 w-full">
+            <input
+              className="border w-32 h-full mx-3 rounded-md px-2 focus:outline-none ml-10"
+              placeholder="Amount"
+              type="text"
+              onChange={(e) => {
+                setSellValue(e.target.value);
+              }}
+            />
+          </div>
         </div>
+      </div>
 
-        <div>
-          <div className="flex flex-wrap justify-evenly py-2">
-            <p className="font-semibold text-[#0ecb81] pt-1">Buy</p>
-            <div className="relative text-left w-max px-1">
-              <div>
+      {/* Buy section
+       */}
+      <div className="flex mt-4">
+        <p className="font-semibold text-[#0ecb81] pt-1">Buy</p>
+        <div className="grid grid-cols-6 ml-3 sm:ml-7 md:ml-5">
+          <div className="col-span-2 sm:col-span-1 md:col-span-2 relative text-left w-full">
+            {buyCurrency ? (
+              <div className="w-full">
                 <button
                   type="button"
-                  className="inline-flex w-max justify-center rounded-md  bg-slate-100 px-6 py-2 mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                  className="flex w-max justify-center rounded-md  bg-slate-100 px-6 py-2 mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                  onClick={handleBuyToggle}
+                >
+                  {buyCurrency.charAt(0).toUpperCase() + buyCurrency.slice(1)}
+                  <AiFillCaretDown className="w-max h-max p-1 pl-4" />
+                </button>
+              </div>
+            ) : (
+              <div className="w-full">
+                <button
+                  type="button"
+                  className="flex w-full justify-center rounded-md  bg-slate-100 py-2 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
                   onClick={handleBuyToggle}
                 >
                   Coin
                   <AiFillCaretDown className="w-max h-max p-1 pl-4" />
                 </button>
               </div>
+            )}
+            {buyToggle && (
+              <div className="absolute z-10 w-48 bg-white rounded shadow-md mt-1.5 p-0.5 border">
+                <input
+                  type="search"
+                  className="m-3 w-[88%] border p-2 text-sm text-gray-900 bg-red-50 rounded-lg border-gray-300 focus:ring-1 focus:ring-red-400 focus:border-red-400 outline-none"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                {loading ? (
+                  <div className="flex flex-row justify-center">
+                    <button
+                      type="button"
+                      className="flex items-center rounded-lg bg-gray-400 px-4 py-2 text-white"
+                      disabled
+                    >
+                      <svg
+                        className="mr-3 h-5 w-5 animate-spin text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      <span className="font-medium"> Loading... </span>
+                    </button>
+                  </div>
+                ) : (
+                  <ul className="space-y-3 text-sm h-40 overflow-y-auto scrollbar">
+                    {handleBuySearch().map((coin) => {
+                      return (
+                        <div
+                          className="hover:bg-red-50 p-3 scroll-auto"
+                          key={coin.name}
+                        >
+                          <li>
+                            <div className="flex items-center">
+                              <p
+                                className="ml-2 text-sm font-medium text-gray-500"
+                                id={coin.name.toLowerCase()}
+                                onClick={handleBuySelection}
+                              >
+                                {coin.name}
+                              </p>
+                            </div>
+                          </li>
+                        </div>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="grid-cols-4 w-full">
+            <input
+              className="w-32 h-full mx-1 rounded-md px-2 focus:outline-none ml-10 font-semibold text-[#0ecb81] caret-transparent"
+              placeholder="0"
+              type="text"
+              value={`${buyValue.toFixed(2)} ${currencyType.toUpperCase()}`}
+              readOnly
+            />
+
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const mapStateToProps = (state) => {
+  return {
+    cryptoInfo: state.crypto.cryptoInfo,
+  };
+};
+
+export default connect(mapStateToProps, null)(Exchange);
+
+{
+  /* Buy area */
+}
+{
+  /* <div>
+          <div className="flex justify-evenly py-2">
+            <p className="font-semibold text-[#0ecb81] pt-1">Buy</p>
+            <div className="relative text-left w-max px-1">
+              {buyCurrency ? (
+                <div>
+                  <button
+                    type="button"
+                    className="inline-flex w-max justify-center rounded-md  bg-slate-100 px-6 py-2 mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                    onClick={handleBuyToggle}
+                  >
+                    {buyCurrency.charAt(0).toUpperCase() + buyCurrency.slice(1)}
+                    <AiFillCaretDown className="w-max h-max p-1 pl-4" />
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <button
+                    type="button"
+                    className="inline-flex w-max justify-center rounded-md  bg-slate-100 px-6 py-2 mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                    onClick={handleBuyToggle}
+                  >
+                    Coin
+                    <AiFillCaretDown className="w-max h-max p-1 pl-4" />
+                  </button>
+                </div>
+              )}
               {buyToggle && (
                 <div className="absolute z-10 w-48 bg-white rounded shadow-md mt-1.5 p-0.5 border">
                   <input
@@ -255,35 +408,23 @@ function Exchange(props) {
                 </div>
               )}
             </div>
-            {/* <input
-              className="w-32 mx-1 rounded-md px-2 focus:outline-none"
-              placeholder="Amount"
+            <input
+              className="w-32 mx-1 rounded-md px-2 focus:outline-none font-semibold text-[#0ecb81] caret-transparent"
+              placeholder="0"
               type="text"
-              value={buyCurrency}
-            /> */}
-            <p className="w-32 mx-1 rounded-md px-2 focus:outline-none">
-              {buyValue.toFixed(2)}
-              {buyCurrency}
-            </p>
+              value={`${buyValue.toFixed(2)} ${currencyType.toUpperCase()}`}
+              readOnly
+            />
           </div>
-        </div>
-        <div className="flex justify-center pt-2.5">
+        </div> */
+}
+{
+  /* <div className="flex justify-center pt-2.5">
           <button
             className="px-3 py-2 border-blue-600 bg-blue-600 rounded-lg text-white font-semibold hover:bg-blue-700"
             onClick={calculateExchangeValue}
           >
             Exchange
           </button>
-        </div>
-      </div>
-    </div>
-  );
+        </div> */
 }
-
-const mapStateToProps = (state) => {
-  return {
-    cryptoInfo: state.crypto.cryptoInfo,
-  };
-};
-
-export default connect(mapStateToProps, null)(Exchange);

@@ -16,6 +16,7 @@ function CryptoDropDown(props) {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [id, setId] = useState();
+  const [selectedCryptos, setSelectedCryptos] = useState([]);
 
   const fetchCoins = async () => {
     if (props.cryptoInfo) {
@@ -38,6 +39,13 @@ function CryptoDropDown(props) {
   };
 
   const handleSelection = (e) => {
+    if (selectedCryptos.includes(e.target.id)) {
+      setSelectedCryptos(
+        selectedCryptos.filter((data) => data !== e.target.id)
+      );
+    } else {
+      setSelectedCryptos((current) => [...current, e.target.id]);
+    }
     if (props.cryptoList.includes(e.target.id)) {
       props.deleteFromCryptoList(e.target.id);
       props.deleteCryptoData(e.target.id);
@@ -77,7 +85,7 @@ function CryptoDropDown(props) {
           <div>
             <button
               type="button"
-              className="inline-flex w-max justify-center rounded-md  bg-slate-100 px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+              className="inline-flex w-max sm:w-full justify-center rounded-md  bg-slate-100 px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
               onClick={handleToggle}
             >
               Coin
@@ -125,26 +133,44 @@ function CryptoDropDown(props) {
                 </div>
               ) : (
                 <ul className=" space-y-3 text-sm h-40 overflow-y-auto scrollbar">
-                  {handleSearch().map((coin) => {
+                  {handleSearch().map((coin, index) => {
                     return (
                       <div
                         className="hover:bg-red-50 p-3 scroll-auto"
                         key={coin.name}
                       >
-                        <li>
-                          <div className="flex items-center">
-                            <input
-                              type="checkbox"
-                              className="w-4 h-4 text-blue-600 bg-white rounded"
-                              value={coin.name}
-                              id={coin.id}
-                              onClick={handleSelection}
-                            />
-                            <label className="ml-2 text-sm font-medium text-gray-500">
-                              {coin.name}
-                            </label>
-                          </div>
-                        </li>
+                        {selectedCryptos.includes(coin.id) ? (
+                          <li>
+                            <div className="flex items-center">
+                              <input
+                                type="checkbox"
+                                className="w-4 h-4 text-blue-600 bg-white rounded"
+                                value={coin.name}
+                                id={coin.id}
+                                onClick={handleSelection}
+                                defaultChecked
+                              />
+                              <label className="ml-2 text-sm font-medium text-gray-500">
+                                {coin.name}
+                              </label>
+                            </div>
+                          </li>
+                        ) : (
+                          <li>
+                            <div className="flex items-center">
+                              <input
+                                type="checkbox"
+                                className="w-4 h-4 text-blue-600 bg-white rounded"
+                                value={coin.name}
+                                id={coin.id}
+                                onClick={handleSelection}
+                              />
+                              <label className="ml-2 text-sm font-medium text-gray-500">
+                                {coin.name}
+                              </label>
+                            </div>
+                          </li>
+                        )}
                       </div>
                     );
                   })}
