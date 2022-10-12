@@ -90,13 +90,13 @@ function Exchange(props) {
       <p className="font-bold">Exchange Coins</p>
       <div className="flex mt-4">
         <p className="font-semibold text-orange-400 pt-1">Sell</p>
-        <div className="grid grid-cols-6 ml-3 sm:ml-7 md:ml-5">
-          <div className="col-span-2 sm:col-span-1 md:col-span-2 relative text-left w-full">
+        <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 ml-3 sm:ml-4 md:ml-2">
+          <div className="col-span-2 sm:col-span-2 md:col-span-4 lg:col-span-5 xl:col-span-4 relative text-left w-full">
             {sellCurrency ? (
               <div className="w-full">
                 <button
                   type="button"
-                  className="flex w-max justify-center rounded-md  bg-slate-100 px-6 py-2 mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                  className="flex w-full justify-between rounded-md  bg-slate-100 px-3 sm:px-6 py-2 sm:mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
                   onClick={handleSellToggle}
                 >
                   {sellCurrency.charAt(0).toUpperCase() + sellCurrency.slice(1)}
@@ -107,7 +107,7 @@ function Exchange(props) {
               <div className="w-full">
                 <button
                   type="button"
-                  className="flex w-full justify-center rounded-md  bg-slate-100 py-2 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                  className="flex w-full justify-between rounded-md  bg-slate-100 px-3 sm:px-6 py-2 sm:mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
                   onClick={handleSellToggle}
                 >
                   Coin
@@ -155,34 +155,36 @@ function Exchange(props) {
                   </div>
                 ) : (
                   <ul className="space-y-3 text-sm h-40 overflow-y-auto scrollbar">
-                    {handleSellSearch().map((coin) => {
-                      return (
-                        <div
-                          className="hover:bg-red-50 p-3 scroll-auto"
-                          key={coin.name}
-                        >
-                          <li>
-                            <div className="flex items-center">
-                              <p
-                                className="ml-2 text-sm font-medium text-gray-500"
-                                id={coin.name.toLowerCase()}
-                                onClick={handleSellSelection}
-                              >
-                                {coin.name}
-                              </p>
-                            </div>
-                          </li>
-                        </div>
-                      );
-                    })}
+                    {handleSellSearch()
+                      .slice(0, 5)
+                      .map((coin) => {
+                        return (
+                          <div
+                            className="hover:bg-red-50 p-3 scroll-auto"
+                            key={coin.name}
+                          >
+                            <li>
+                              <div className="flex items-center">
+                                <p
+                                  className="ml-2 text-sm font-medium text-gray-500"
+                                  id={coin.name.toLowerCase()}
+                                  onClick={handleSellSelection}
+                                >
+                                  {coin.name}
+                                </p>
+                              </div>
+                            </li>
+                          </div>
+                        );
+                      })}
                   </ul>
                 )}
               </div>
             )}
           </div>
-          <div className="grid-cols-4 w-full">
+          <div className="grid-cols-1 sm:grid-cols-3 md:col-span-2 w-full lg:ml-10 2xl:ml-10">
             <input
-              className="border w-32 h-full mx-3 rounded-md px-2 focus:outline-none ml-10"
+              className="border w-20 ml-4 sm:w-32 md:w-20 lg:w-24 h-full sm:mx-3 rounded-md px-2 focus:outline-none sm:ml-10 sm:mt-0 md:ml-3.5 xl:ml-0"
               placeholder="Amount"
               type="text"
               onChange={(e) => {
@@ -197,13 +199,13 @@ function Exchange(props) {
        */}
       <div className="flex mt-4">
         <p className="font-semibold text-[#0ecb81] pt-1">Buy</p>
-        <div className="grid grid-cols-6 ml-3 sm:ml-7 md:ml-5">
-          <div className="col-span-2 sm:col-span-1 md:col-span-2 relative text-left w-full">
+        <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 ml-3 sm:ml-4 md:ml-2">
+          <div className="col-span-2 sm:col-span-2 md:col-span-4 lg:col-span-5 xl:col-span-4 relative text-left w-full">
             {buyCurrency ? (
               <div className="w-full">
                 <button
                   type="button"
-                  className="flex w-max justify-center rounded-md  bg-slate-100 px-6 py-2 mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                  className="flex w-full justify-between rounded-md  bg-slate-100 px-3 sm:px-6 py-2 sm:mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
                   onClick={handleBuyToggle}
                 >
                   {buyCurrency.charAt(0).toUpperCase() + buyCurrency.slice(1)}
@@ -214,7 +216,7 @@ function Exchange(props) {
               <div className="w-full">
                 <button
                   type="button"
-                  className="flex w-full justify-center rounded-md  bg-slate-100 py-2 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+                  className="flex w-full justify-between rounded-md  bg-slate-100 px-3 sm:px-6 py-2 sm:mx-1 text-sm font-medium text-gray-700 shadow-sm hover:ring-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100"
                   onClick={handleBuyToggle}
                 >
                   Coin
@@ -262,42 +264,50 @@ function Exchange(props) {
                   </div>
                 ) : (
                   <ul className="space-y-3 text-sm h-40 overflow-y-auto scrollbar">
-                    {handleBuySearch().map((coin) => {
-                      return (
-                        <div
-                          className="hover:bg-red-50 p-3 scroll-auto"
-                          key={coin.name}
-                        >
-                          <li>
-                            <div className="flex items-center">
-                              <p
-                                className="ml-2 text-sm font-medium text-gray-500"
-                                id={coin.name.toLowerCase()}
-                                onClick={handleBuySelection}
-                              >
-                                {coin.name}
-                              </p>
-                            </div>
-                          </li>
-                        </div>
-                      );
-                    })}
+                    {handleBuySearch()
+                      .map((coin) => {
+                        return (
+                          <div
+                            className="hover:bg-red-50 p-3 scroll-auto"
+                            key={coin.name}
+                          >
+                            <li>
+                              <div className="flex items-center">
+                                <p
+                                  className="ml-2 text-sm font-medium text-gray-500"
+                                  id={coin.id.toLowerCase()}
+                                  onClick={handleBuySelection}
+                                >
+                                  {coin.name}
+                                </p>
+                              </div>
+                            </li>
+                          </div>
+                        );
+                      })}
                   </ul>
                 )}
               </div>
             )}
           </div>
-          <div className="grid-cols-4 w-full">
+          <div className="grid-cols-1 sm:grid-cols-3 md:col-span-2 w-full lg:ml-10 2xl:ml-10">
             <input
-              className="w-32 h-full mx-1 rounded-md px-2 focus:outline-none ml-10 font-semibold text-[#0ecb81] caret-transparent"
-              placeholder="0"
+              className="w-20 ml-4 sm:w-32 md:w-20 lg:w-24 2xl:w-32 h-full sm:mx-3 rounded-md px-1 focus:outline-none sm:ml-10 sm:mt-0 md:ml-3.5 xl:ml-0 font-semibold text-[#0ecb81] caret-transparent"
               type="text"
               value={`${buyValue.toFixed(2)} ${currencyType.toUpperCase()}`}
               readOnly
             />
-
           </div>
         </div>
+      </div>
+
+      <div className="flex justify-center pt-2.5">
+        <button
+          className="px-3 py-2 border-blue-600 bg-blue-600 rounded-lg text-white font-semibold hover:bg-blue-700"
+          onClick={calculateExchangeValue}
+        >
+          Exchange
+        </button>
       </div>
     </div>
   );
